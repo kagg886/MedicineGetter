@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.utils.toSetOrEmpty
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.net.Inet4Address
+import java.net.NetworkInterface
 
 plugins {
     id("com.android.application")
@@ -60,8 +63,14 @@ android {
 }
 
 fun ip():String {
-    return BufferedReader(InputStreamReader(Runtime.getRuntime().exec("hostname -I").inputStream)).readLine()
-        .split(" ")[0]
+    val a = NetworkInterface.getNetworkInterfaces().toList().filter {
+        return@filter it.run {
+            !(isLoopback || isVirtual || !isUp)
+        }
+    }.sortedBy { it.index }[0].inetAddresses.toList()
+        .filterIsInstance<Inet4Address>()[0].hostAddress
+    println("本机ip：${a}，请保证手机与服务器在同一wifi里")
+    return a
 }
 
 dependencies {
