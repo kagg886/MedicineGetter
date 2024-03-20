@@ -1,7 +1,6 @@
 package com.kagg886.medicine_getter.ui.screen.ocr
 
 import android.graphics.Bitmap
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.compose.foundation.layout.padding
@@ -12,12 +11,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.kagg886.medicine_getter.BuildConfig
 import com.kagg886.medicine_getter.backend.AppDatabase
 import com.kagg886.medicine_getter.backend.entity.IdentificationRecord
 import com.kagg886.medicine_getter.network.AIResult
+import com.kagg886.medicine_getter.network.AiUrl
 import com.kagg886.medicine_getter.network.getAIResult
-import com.kagg886.sylu_eoa.api.v2.network.NetWorkClient
+import com.kagg886.medicine_getter.network.NetWorkClient
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -51,7 +50,7 @@ fun OcrScreen() {
                 delay(3000) //防止内存溢出
                 api.takePhoto(onImageCaptured = {bitmap->
                     dispatcher.launch {
-                        val result = NetWorkClient(BuildConfig.AI_HOST).getAIResult(bitmap.let {
+                        val result = NetWorkClient(AiUrl.host).getAIResult(bitmap.let {
                             val s = ByteArrayOutputStream()
                             it.compress(Bitmap.CompressFormat.PNG, 80, s)
                             it.recycle()

@@ -1,7 +1,7 @@
 package com.kagg886.medicine_getter
 
 import com.kagg886.medicine_getter.network.getAIResult
-import com.kagg886.sylu_eoa.api.v2.network.NetWorkClient
+import com.kagg886.medicine_getter.network.NetWorkClient
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test

@@ -1,5 +1,6 @@
 package com.kagg886.sylu_eoa.api.v2.network
 
+import com.kagg886.medicine_getter.network.CookieSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json

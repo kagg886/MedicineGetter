@@ -33,10 +33,11 @@ android {
     buildTypes {
         //调试包使用本机ip，正式包需改成生产域名。
         debug {
+//            buildConfigField("String", "AI_HOST", "\"\"")
             buildConfigField("String", "AI_HOST", "\"http://${ip()}:8080\"")
         }
         release {
-            buildConfigField("String", "AI_HOST", "\"https://service.kagg886.top\"")
+            buildConfigField("String", "AI_HOST", "\"\"") //置空
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

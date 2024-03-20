@@ -19,6 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.kagg886.medicine_getter.network.AiUrl
+import com.kagg886.medicine_getter.ui.ServerChooseDialog
 import com.kagg886.medicine_getter.ui.screen.history.HistoryScreen
 import com.kagg886.medicine_getter.ui.screen.details.DetailScreen
 import com.kagg886.medicine_getter.ui.screen.main.MainScreen
@@ -69,6 +71,17 @@ class MainActivity : ComponentActivity() {
                     val snackHostState by remember {
                         mutableStateOf(SnackbarHostState())
                     }
+
+                    var serverChooser by remember {
+                        mutableStateOf(true)
+                    }
+
+                    if (serverChooser) {
+                        ServerChooseDialog {
+                            serverChooser = false
+                        }
+                    }
+
                     Scaffold(
                         snackbarHost = {
                             SnackbarHost(snackHostState) { data ->

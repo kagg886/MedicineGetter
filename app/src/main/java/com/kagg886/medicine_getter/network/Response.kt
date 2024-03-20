@@ -1,11 +1,8 @@
 package com.kagg886.medicine_getter.network
 
-import android.R.attr.bitmap
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import com.kagg886.sylu_eoa.api.v2.network.NetWorkClient
-import com.kagg886.sylu_eoa.api.v2.network.asJSONOrigin
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import okhttp3.MultipartBody

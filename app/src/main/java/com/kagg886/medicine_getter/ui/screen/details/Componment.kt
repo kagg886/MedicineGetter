@@ -26,6 +26,7 @@ import androidx.compose.ui.window.Dialog
 import coil.compose.SubcomposeAsyncImage
 import com.kagg886.medicine_getter.BuildConfig
 import com.kagg886.medicine_getter.network.AIResult
+import com.kagg886.medicine_getter.network.AiUrl
 
 @Composable
 fun GrassListItem(item: AIResult) {
@@ -35,7 +36,7 @@ fun GrassListItem(item: AIResult) {
     if (showDialog) {
         Dialog(onDismissRequest = { showDialog = false }) {
             SubcomposeAsyncImage(
-                model = "${BuildConfig.AI_HOST}/ai/image?spell=${item.spell}",
+                model = "${AiUrl.host}/ai/image?spell=${item.spell}",
                 loading = {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
@@ -55,7 +56,7 @@ fun GrassListItem(item: AIResult) {
         Text(text = item.name)
     }, leadingContent = {
         SubcomposeAsyncImage(
-            model = "${BuildConfig.AI_HOST}/ai/image?spell=${item.spell}",
+            model = "${AiUrl.host}/ai/image?spell=${item.spell}",
             loading = {
                 CircularProgressIndicator() // 圆形进度条
             },

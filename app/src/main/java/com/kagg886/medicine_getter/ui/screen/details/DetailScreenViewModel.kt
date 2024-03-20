@@ -3,13 +3,13 @@ package com.kagg886.medicine_getter.ui.screen.details
 import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
-import com.kagg886.medicine_getter.BuildConfig
 import com.kagg886.medicine_getter.backend.AppDatabase
 import com.kagg886.medicine_getter.backend.entity.IdentificationRecord
 import com.kagg886.medicine_getter.network.AIResult
+import com.kagg886.medicine_getter.network.AiUrl
 import com.kagg886.medicine_getter.network.getAIResult
 import com.kagg886.medicine_getter.ui.model.BaseViewModel
-import com.kagg886.sylu_eoa.api.v2.network.NetWorkClient
+import com.kagg886.medicine_getter.network.NetWorkClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream
 class DetailScreenViewModel(application: Application) :
     BaseViewModel<DetailScreenUiState, DetailScreenUiAction>(application = application) {
 
-    private val net: NetWorkClient = NetWorkClient(BuildConfig.AI_HOST)
+    private val net: NetWorkClient = NetWorkClient(AiUrl.host)
 
     private val dao = AppDatabase.getDatabase(getApplication()).identificationRecordDao()
 

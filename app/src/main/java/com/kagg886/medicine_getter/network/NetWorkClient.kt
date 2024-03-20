@@ -1,5 +1,6 @@
-package com.kagg886.sylu_eoa.api.v2.network
+package com.kagg886.medicine_getter.network
 
+import com.kagg886.sylu_eoa.api.v2.network.InMemoryCookieSerializer
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import okhttp3.*
