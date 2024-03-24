@@ -19,10 +19,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.kagg886.medicine_getter.network.AiUrl
 import com.kagg886.medicine_getter.ui.ServerChooseDialog
+import com.kagg886.medicine_getter.ui.screen.detail.DetailScreen
 import com.kagg886.medicine_getter.ui.screen.history.HistoryScreen
-import com.kagg886.medicine_getter.ui.screen.details.DetailScreen
+import com.kagg886.medicine_getter.ui.screen.result.ResultScreen
 import com.kagg886.medicine_getter.ui.screen.main.MainScreen
 import com.kagg886.medicine_getter.ui.screen.ocr.OcrScreen
 import com.kagg886.medicine_getter.ui.theme.MedicineGetterTheme
@@ -52,6 +52,7 @@ object PageConfig {
 
     val allPage: List<PageItem> = mutableListOf<PageItem>().apply {
         addAll(nav)
+        add(PageItem("结果", R.drawable.baseline_home_24, "ResultPage") @Composable { ResultScreen() })
         add(PageItem("详情", R.drawable.baseline_home_24, "DetailPage") @Composable { DetailScreen() })
     }
 }

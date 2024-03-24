@@ -14,7 +14,7 @@ import kotlin.math.min
 
 //"name":"\u732a\u7259\u7682","rate":1.0,"spell":"Zhuyazao"
 @Serializable
-data class AIResult(val name:String,val rate:Float,val spell:String)
+data class AIResult(val name:String,val rate:Float,val spell:String): java.io.Serializable
 
 suspend fun NetWorkClient.getImage(spell:String):Bitmap = execute("/ai/image?spell=$spell").body!!.byteStream().use {
     val origin = BitmapFactory.decodeStream(it)

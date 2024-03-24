@@ -1,8 +1,7 @@
-package com.kagg886.medicine_getter.ui.screen.details
+package com.kagg886.medicine_getter.ui.screen.result
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,33 +23,33 @@ import java.io.File
 
 @Composable
 private fun Container(bitmap: Bitmap, effect: @Composable () -> Unit) {
-    val model: DetailScreenViewModel = viewModel()
+    val model: ResultScreenViewModel = viewModel()
     val state by model.state.collectAsState()
 
     when (state) {
-        DetailScreenUiState.DefaultState -> {
+        ResultScreenUiState.DefaultState -> {
             LaunchedEffect(key1 = Unit, block = {
-                model.dispatch(DetailScreenUiAction.LoadImage(bitmap))
+                model.dispatch(ResultScreenUiAction.LoadImage(bitmap))
             })
         }
 
-        DetailScreenUiState.LoadingState -> {
+        ResultScreenUiState.LoadingState -> {
             CircularProgressIndicator()
         }
 
-        is DetailScreenUiState.LoadingFailed -> {
+        is ResultScreenUiState.LoadingFailed -> {
             Column {
-                Text(text = (state as DetailScreenUiState.LoadingFailed).err)
-                Button(onClick = { model.dispatch(DetailScreenUiAction.LoadImage(bitmap)) }) {
+                Text(text = (state as ResultScreenUiState.LoadingFailed).err)
+                Button(onClick = { model.dispatch(ResultScreenUiAction.LoadImage(bitmap)) }) {
                     Text(text = "重试")
                 }
             }
             effect()
         }
 
-        is DetailScreenUiState.LoadingSuccess -> {
+        is ResultScreenUiState.LoadingSuccess -> {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items((state as DetailScreenUiState.LoadingSuccess).msg) {
+                items((state as ResultScreenUiState.LoadingSuccess).msg) {
                     GrassListItem(item = it)
                 }
             }
@@ -61,7 +60,7 @@ private fun Container(bitmap: Bitmap, effect: @Composable () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen() {
+fun ResultScreen() {
     var screenSize by remember {
         mutableIntStateOf(0)
     }

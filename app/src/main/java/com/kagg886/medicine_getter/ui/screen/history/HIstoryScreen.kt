@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kagg886.medicine_getter.ui.screen.details.GrassListItem
+import com.kagg886.medicine_getter.ui.screen.result.GrassListItem
 
 @Composable
 fun HistoryScreen() {
@@ -26,9 +27,15 @@ fun HistoryScreen() {
 
         is HistoryUiState.LoadSuccess -> {
             val data = (state as HistoryUiState.LoadSuccess).list.asReversed()
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(data) {
-                    GrassListItem(item = it.result)
+            if (data.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = "没有数据")
+                }
+            } else{
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(data) {
+                        GrassListItem(item = it.result)
+                    }
                 }
             }
         }

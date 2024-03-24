@@ -1,4 +1,4 @@
-package com.kagg886.medicine_getter.ui.screen.details
+package com.kagg886.medicine_getter.ui.screen.result
 
 import android.app.Application
 import android.graphics.Bitmap
@@ -20,22 +20,22 @@ import kotlinx.serialization.json.jsonObject
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
-class DetailScreenViewModel(application: Application) :
-    BaseViewModel<DetailScreenUiState, DetailScreenUiAction>(application = application) {
+class ResultScreenViewModel(application: Application) :
+    BaseViewModel<ResultScreenUiState, ResultScreenUiAction>(application = application) {
 
     private val net: NetWorkClient = NetWorkClient(AiUrl.host)
 
     private val dao = AppDatabase.getDatabase(getApplication()).identificationRecordDao()
 
-    override fun defaultUiState(): DetailScreenUiState {
-        return DetailScreenUiState.DefaultState
+    override fun defaultUiState(): ResultScreenUiState {
+        return ResultScreenUiState.DefaultState
     }
 
 
-    override suspend fun onAction(state: DetailScreenUiState, action: DetailScreenUiAction) {
+    override suspend fun onAction(state: ResultScreenUiState, action: ResultScreenUiAction) {
         when (action) {
-            is DetailScreenUiAction.LoadImage -> {
-                setUiState(DetailScreenUiState.LoadingState)
+            is ResultScreenUiAction.LoadImage -> {
+                setUiState(ResultScreenUiState.LoadingState)
                 viewModelScope.launch {
                     withContext(Dispatchers.IO) {
                         kotlin.runCatching {
@@ -50,12 +50,12 @@ class DetailScreenViewModel(application: Application) :
                                 "列表为空！"
                             }
                             //保存到数据库
-                            setUiState(DetailScreenUiState.LoadingSuccess(result))
+                            setUiState(ResultScreenUiState.LoadingSuccess(result))
                             result.forEach {
                                 dao.insertNewRecord(IdentificationRecord(result = it))
                             }
                         }.onFailure {
-                            setUiState(DetailScreenUiState.LoadingFailed(it.message ?: "未知错误"))
+                            setUiState(ResultScreenUiState.LoadingFailed(it.message ?: "未知错误"))
                         }
                     }
                 }

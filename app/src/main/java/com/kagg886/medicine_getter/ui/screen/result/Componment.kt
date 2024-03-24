@@ -1,4 +1,4 @@
-package com.kagg886.medicine_getter.ui.screen.details
+package com.kagg886.medicine_getter.ui.screen.result
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,8 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.os.bundleOf
 import coil.compose.SubcomposeAsyncImage
-import com.kagg886.medicine_getter.BuildConfig
+import com.kagg886.medicine_getter.LocalNavController
 import com.kagg886.medicine_getter.network.AIResult
 import com.kagg886.medicine_getter.network.AiUrl
 
@@ -73,8 +73,12 @@ fun GrassListItem(item: AIResult) {
     }, supportingContent = {
         Text(text = "识别率:${item.rate}")
     }, trailingContent = {
+        val nav = LocalNavController.current
         IconButton(onClick = {
-            TODO("实现百科详情栏目")
+            val node = nav.graph.findNode("DetailPage")
+            nav.navigate(node!!.id, bundleOf(
+                "id" to item
+            ))
         }) {
             Icon(imageVector = Icons.Outlined.ArrowForward, contentDescription = "")
         }

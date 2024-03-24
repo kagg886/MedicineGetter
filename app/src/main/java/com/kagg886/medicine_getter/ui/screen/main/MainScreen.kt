@@ -149,7 +149,7 @@ fun MainScreen() {
                 compress(Bitmap.CompressFormat.PNG,80,FileOutputStream(f))
             }
 
-            val node = navController.graph.findNode("DetailPage")
+            val node = navController.graph.findNode("ResultPage")
             LocalNavController.current.navigate(node!!.id)
             //最好提供uri，Bitmap由uri进行解析。
             //防止Bitmap序列化问题闪退
