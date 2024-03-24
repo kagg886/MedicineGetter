@@ -1,5 +1,7 @@
 package com.kagg886.medicine_getter.ui.screen.main
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Icon
 import android.os.Bundle
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
@@ -25,6 +28,8 @@ import com.kagg886.medicine_getter.LocalHomeAction
 import com.kagg886.medicine_getter.LocalNavController
 import com.kagg886.medicine_getter.LocalShowSnackHost
 import com.kagg886.medicine_getter.ui.screen.main.photo.PhotoComponent
+import java.io.File
+import java.io.FileOutputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -132,10 +137,26 @@ fun MainScreen() {
 
         is MainScreenUiState.CropImageSuccess -> {
             val navController = LocalNavController.current
+            val ctx = LocalContext.current
+
+            val f = File(ctx.cacheDir,"a.png").apply {
+                if (exists()) {
+                    delete()
+                }
+                createNewFile()
+            }
+            (state as MainScreenUiState.CropImageSuccess).bitmap.run {
+                compress(Bitmap.CompressFormat.PNG,80,FileOutputStream(f))
+            }
+
             val node = navController.graph.findNode("DetailPage")
-            LocalNavController.current.navigate(node!!.id, bundleOf(
-                "image" to (state as MainScreenUiState.CropImageSuccess).bitmap
-            ))
+            LocalNavController.current.navigate(node!!.id)
+            //最好提供uri，Bitmap由uri进行解析。
+            //防止Bitmap序列化问题闪退
+
+//            LocalNavController.current.navigate(node!!.id, bundleOf(
+//                "image" to (state as MainScreenUiState.CropImageSuccess).bitmap
+//            ))
         }
     }
 }

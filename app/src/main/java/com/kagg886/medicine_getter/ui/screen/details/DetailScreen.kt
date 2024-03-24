@@ -1,6 +1,8 @@
 package com.kagg886.medicine_getter.ui.screen.details
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,16 +13,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kagg886.medicine_getter.DEFAULT_ROUTER
 import com.kagg886.medicine_getter.LocalNavController
+import java.io.File
 
 
 @Composable
-private fun Container(bitmap:Bitmap, effect: @Composable () -> Unit) {
-    val model:DetailScreenViewModel = viewModel()
+private fun Container(bitmap: Bitmap, effect: @Composable () -> Unit) {
+    val model: DetailScreenViewModel = viewModel()
     val state by model.state.collectAsState()
 
     when (state) {
@@ -29,6 +33,7 @@ private fun Container(bitmap:Bitmap, effect: @Composable () -> Unit) {
                 model.dispatch(DetailScreenUiAction.LoadImage(bitmap))
             })
         }
+
         DetailScreenUiState.LoadingState -> {
             CircularProgressIndicator()
         }
@@ -42,6 +47,7 @@ private fun Container(bitmap:Bitmap, effect: @Composable () -> Unit) {
             }
             effect()
         }
+
         is DetailScreenUiState.LoadingSuccess -> {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items((state as DetailScreenUiState.LoadingSuccess).msg) {
@@ -59,6 +65,7 @@ fun DetailScreen() {
     var screenSize by remember {
         mutableIntStateOf(0)
     }
+    val ctx = LocalContext.current
     Column(modifier = Modifier
         .fillMaxSize()
         .onGloballyPositioned {
@@ -66,9 +73,19 @@ fun DetailScreen() {
         }) {
         val stack by LocalNavController.current.currentBackStackEntryAsState()
 
-        var img by remember(stack) {
-            mutableStateOf<Bitmap?>(stack?.arguments?.getParcelable("image"))
+        var img by remember {
+            mutableStateOf<Bitmap?>(null)
         }
+
+        LaunchedEffect(key1 = stack, block = {
+            img = BitmapFactory.decodeFile(File(ctx.cacheDir,"a.png").absolutePath)
+        })
+//
+//        DisposableEffect(key1 = img, effect = {
+//            onDispose {
+//                img?.recycle()
+//            }
+//        })
 
         if (img != null) {
             val state = rememberBottomSheetScaffoldState()
@@ -86,7 +103,7 @@ fun DetailScreen() {
                     Container(bitmap = img!!) {
                         val nav = LocalNavController.current
                         LaunchedEffect(key1 = state.bottomSheetState.currentValue, block = {
-                            if(state.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
+                            if (state.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
                                 nav.navigate(DEFAULT_ROUTER)
                             }
                         })
@@ -95,15 +112,17 @@ fun DetailScreen() {
             }, scaffoldState = state) {
                 val density = LocalDensity.current
 
-                val cardHeight by remember(key1 = state.bottomSheetState.requireOffset(),key2 = screenSize) {
+                val cardHeight by remember(key1 = state.bottomSheetState.requireOffset(), key2 = screenSize) {
                     mutableStateOf(with(density) {
                         screenSize.toDp() - ((screenSize - state.bottomSheetState.requireOffset()).toDp())
                     })
                 }
 
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(cardHeight), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(cardHeight), contentAlignment = Alignment.Center
+                ) {
                     Card(modifier = Modifier.height(cardHeight)) {
                         Image(bitmap = img!!.asImageBitmap(), contentDescription = "")
                     }
