@@ -45,11 +45,15 @@ fun OcrScreen() {
     DisposableEffect(key1 = Unit) {
         val dispatcher = CoroutineScope(Dispatchers.IO)
 
-        dispatcher.launch {
+        dispatcher.launch dispatcher@{
             while (isActive) {
                 delay(3000) //防止内存溢出
                 api.takePhoto(onImageCaptured = {bitmap->
                     dispatcher.launch {
+                        if (!isActive) {
+                            //上传前再检测一下
+                            return@launch
+                        }
                         val result = NetWorkClient(AiUrl.host).getAIResult(bitmap.let {
                             val s = ByteArrayOutputStream()
                             it.compress(Bitmap.CompressFormat.PNG, 80, s)

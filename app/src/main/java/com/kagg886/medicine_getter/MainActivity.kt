@@ -22,9 +22,11 @@ import androidx.navigation.compose.rememberNavController
 import com.kagg886.medicine_getter.ui.ServerChooseDialog
 import com.kagg886.medicine_getter.ui.screen.detail.DetailScreen
 import com.kagg886.medicine_getter.ui.screen.history.HistoryScreen
-import com.kagg886.medicine_getter.ui.screen.result.ResultScreen
 import com.kagg886.medicine_getter.ui.screen.main.MainScreen
 import com.kagg886.medicine_getter.ui.screen.ocr.OcrScreen
+import com.kagg886.medicine_getter.ui.screen.result.ResultScreen
+import com.kagg886.medicine_getter.ui.screen.tool.ToolScreen
+import com.kagg886.medicine_getter.ui.screen.tool.impl.OCRTool
 import com.kagg886.medicine_getter.ui.theme.MedicineGetterTheme
 import kotlinx.coroutines.launch
 
@@ -46,14 +48,16 @@ const val DEFAULT_ROUTER = "MainPage"
 object PageConfig {
     val nav = listOf(
         PageItem("首页", R.drawable.baseline_home_24, DEFAULT_ROUTER) @Composable { MainScreen() },
-        PageItem("识别", R.drawable.baseline_home_24, "OCRPage") @Composable { OcrScreen() },
-        PageItem("历史", R.drawable.baseline_home_24, "HistoryPage") @Composable { HistoryScreen() },
+        PageItem("识别", R.drawable.baseline_search_24, "OCRPage") @Composable { OcrScreen() },
+        PageItem("历史", R.drawable.baseline_history_24, "HistoryPage") @Composable { HistoryScreen() },
+        PageItem("工具", R.drawable.baseline_shopping_bag_24, "ToolPage") @Composable { ToolScreen() },
     )
 
     val allPage: List<PageItem> = mutableListOf<PageItem>().apply {
         addAll(nav)
         add(PageItem("结果", R.drawable.baseline_home_24, "ResultPage") @Composable { ResultScreen() })
         add(PageItem("详情", R.drawable.baseline_home_24, "DetailPage") @Composable { DetailScreen() })
+        add(PageItem("OCR", R.drawable.baseline_home_24, "Tool_OCR") @Composable { OCRTool() })
     }
 }
 
@@ -93,8 +97,14 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         topBar = {
+                            val title = PageConfig.allPage.find { it.router == reg?.destination?.route }
                             TopAppBar(
-                                title = { Text(text = LocalContext.current.resources.getString(R.string.app_name)) },
+                                title = {
+                                    Text(
+                                        text = title?.title
+                                            ?: LocalContext.current.resources.getString(R.string.app_name)
+                                    )
+                                },
                                 navigationIcon = {
                                     val s = LocalHomeAction.current
                                     val func = s.value

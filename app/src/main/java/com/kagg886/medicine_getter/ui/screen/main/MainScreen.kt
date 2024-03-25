@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.FileProvider
@@ -27,6 +28,7 @@ import com.image.cropview.ImageCrop
 import com.kagg886.medicine_getter.LocalHomeAction
 import com.kagg886.medicine_getter.LocalNavController
 import com.kagg886.medicine_getter.LocalShowSnackHost
+import com.kagg886.medicine_getter.R
 import com.kagg886.medicine_getter.ui.screen.main.photo.PhotoComponent
 import java.io.File
 import java.io.FileOutputStream
@@ -80,11 +82,11 @@ fun MainScreen() {
         is MainScreenUiState.WaitSelect -> {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 HomeCard(onClick = { model.dispatch(MainScreenUiAction.SelectImage) }, text = "从图片中选择", icon = {
-                    Icon(imageVector = Icons.Outlined.LocationOn, contentDescription = "")
+                    Icon(painter = painterResource(id = R.drawable.baseline_insert_photo_24), contentDescription = "")
                 })
 
                 HomeCard(onClick = { model.dispatch(MainScreenUiAction.SelectCamera) }, text = "从相机中选择", icon = {
-                    Icon(imageVector = Icons.Outlined.LocationOn, contentDescription = "")
+                    Icon(painter = painterResource(id = R.drawable.baseline_camera_alt_24), contentDescription = "")
                 })
 
             }
