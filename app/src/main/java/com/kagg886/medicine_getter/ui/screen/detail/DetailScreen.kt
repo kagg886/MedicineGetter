@@ -65,7 +65,7 @@ fun DetailScreen() {
             val unit = items[item!!.spell]!!
 
             SubcomposeAsyncImage(
-                model = "${AiUrl.host}/ai/image?spell=${item!!.spell}",
+                model = "${AiUrl.main}/ai/image?spell=${item!!.spell}",
                 loading = {
                     CircularProgressIndicator() // 圆形进度条
                 },

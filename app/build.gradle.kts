@@ -35,9 +35,11 @@ android {
         debug {
 //            buildConfigField("String", "AI_HOST", "\"\"")
             buildConfigField("String", "AI_HOST", "\"http://${ip()}:13746\"")
+            buildConfigField("String", "OCR_HOST", "\"http://${ip()}:8081\"")
         }
         release {
             buildConfigField("String", "AI_HOST", "\"\"") //置空
+            buildConfigField("String", "OCR_HOST", "\"\"") //置空
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

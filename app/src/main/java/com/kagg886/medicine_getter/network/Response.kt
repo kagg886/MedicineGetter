@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.*
 import kotlin.math.min
@@ -14,17 +15,36 @@ import kotlin.math.min
 
 //"name":"\u732a\u7259\u7682","rate":1.0,"spell":"Zhuyazao"
 @Serializable
-data class AIResult(val name:String,val rate:Float,val spell:String): java.io.Serializable
+data class AIResult(val name: String, val rate: Float, val spell: String) : java.io.Serializable
 
-suspend fun NetWorkClient.getImage(spell:String):Bitmap = execute("/ai/image?spell=$spell").body!!.byteStream().use {
+suspend fun NetWorkClient.getImage(spell: String): Bitmap = execute("/ai/image?spell=$spell").body!!.byteStream().use {
     val origin = BitmapFactory.decodeStream(it)
     val s = Bitmap.createBitmap(origin, 0, 0, origin.getWidth(), origin.getHeight(), Matrix().apply {
-        postScale(200f/origin.width.toFloat(),200f/origin.height.toFloat())
+        postScale(200f / origin.width.toFloat(), 200f / origin.height.toFloat())
     }, false)
     origin.recycle()
     return s
 }
 
+//TODO 函数未测试
+suspend fun NetWorkClient.getOCRResult(f: Bitmap): String {
+    return execute("/ocr") {
+        this.post(
+            MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                    "file", "aaa.png",
+                    ByteArrayOutputStream().run {
+                        use {
+                            f.compress(Bitmap.CompressFormat.PNG, 80, it)
+                        }
+                        toByteArray()
+                    }.toRequestBody()
+                )
+                .build()
+        )
+    }.body!!.string()
+}
 
 suspend fun NetWorkClient.getAIResult(f: InputStream): JsonElement {
     val k = execute("/ai/getResultForImage") {

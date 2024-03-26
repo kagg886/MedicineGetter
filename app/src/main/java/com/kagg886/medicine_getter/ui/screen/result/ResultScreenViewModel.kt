@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream
 class ResultScreenViewModel(application: Application) :
     BaseViewModel<ResultScreenUiState, ResultScreenUiAction>(application = application) {
 
-    private val net: NetWorkClient = NetWorkClient(AiUrl.host)
+    private val net: NetWorkClient = NetWorkClient(AiUrl.main)
 
     private val dao = AppDatabase.getDatabase(getApplication()).identificationRecordDao()
 

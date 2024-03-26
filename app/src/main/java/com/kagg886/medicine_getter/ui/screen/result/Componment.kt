@@ -36,7 +36,7 @@ fun GrassListItem(item: AIResult) {
     if (showDialog) {
         Dialog(onDismissRequest = { showDialog = false }) {
             SubcomposeAsyncImage(
-                model = "${AiUrl.host}/ai/image?spell=${item.spell}",
+                model = "${AiUrl.main}/ai/image?spell=${item.spell}",
                 loading = {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
@@ -56,7 +56,7 @@ fun GrassListItem(item: AIResult) {
         Text(text = item.name)
     }, leadingContent = {
         SubcomposeAsyncImage(
-            model = "${AiUrl.host}/ai/image?spell=${item.spell}",
+            model = "${AiUrl.main}/ai/image?spell=${item.spell}",
             loading = {
                 CircularProgressIndicator() // 圆形进度条
             },

@@ -54,7 +54,7 @@ fun OcrScreen() {
                             //上传前再检测一下
                             return@launch
                         }
-                        val result = NetWorkClient(AiUrl.host).getAIResult(bitmap.let {
+                        val result = NetWorkClient(AiUrl.main).getAIResult(bitmap.let {
                             val s = ByteArrayOutputStream()
                             it.compress(Bitmap.CompressFormat.PNG, 80, s)
                             it.recycle()
