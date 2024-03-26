@@ -26,7 +26,7 @@ import com.kagg886.medicine_getter.ui.screen.main.MainScreen
 import com.kagg886.medicine_getter.ui.screen.ocr.OcrScreen
 import com.kagg886.medicine_getter.ui.screen.result.ResultScreen
 import com.kagg886.medicine_getter.ui.screen.tool.ToolScreen
-import com.kagg886.medicine_getter.ui.screen.tool.impl.OCRTool
+import com.kagg886.medicine_getter.ui.screen.tool.impl.OCRToolWindow
 import com.kagg886.medicine_getter.ui.theme.MedicineGetterTheme
 import kotlinx.coroutines.launch
 
@@ -57,7 +57,7 @@ object PageConfig {
         addAll(nav)
         add(PageItem("结果", R.drawable.baseline_home_24, "ResultPage") @Composable { ResultScreen() })
         add(PageItem("详情", R.drawable.baseline_home_24, "DetailPage") @Composable { DetailScreen() })
-        add(PageItem("OCR", R.drawable.baseline_home_24, "Tool_OCR") @Composable { OCRTool() })
+        add(PageItem("OCR", R.drawable.baseline_home_24, "Tool_OCR") @Composable { OCRToolWindow() })
     }
 }
 
